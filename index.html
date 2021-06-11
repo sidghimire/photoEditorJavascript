@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href=".\icon\bootstrap-icons.css">
+
+
+    <title>Photo Editor</title>
+</head>
+
+<body>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jquery.js"></script>
+    <script src="main.js"></script>
+    <div class="" style="height:100vh;display: flex;flex-direction: column;">
+        <div class="header bg-dark">
+            <img id="uploadedImage" src="" alt="The Scream" hidden>
+            <input id="uploadFile" value="Upload File" type="file" hidden>
+            <label for="uploadFile" class="btn btn-primary btn-sm upload-btn">Upload Photo</label>
+        </div>
+        <div class="row g-0" style="flex: 1;">
+            <div class="col-md-1 sidebar bg-dark">
+                <div class="row g-0 btns-row">
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-hand-index text-center choose-feature-btn" title="Select"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-arrows-move text-center choose-feature-btn" title="Move"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-pencil text-center choose-feature-btn" title="Draw"></i>
+                    </div>
+                </div>
+                <div class="row g-0 btns-row">
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-paint-bucket text-center choose-feature-btn" title="Bucket Fill"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-brush text-center choose-feature-btn" title="Brush"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-crop text-center choose-feature-btn" title="Crop"></i>
+                    </div>
+                </div>
+                <div class="row g-0 btns-row">
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-eraser text-center choose-feature-btn" title="Eraser"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-fonts text-center choose-feature-btn" title="Add Text"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-eyedropper text-center choose-feature-btn" title="Select Color"></i>
+                    </div>
+                </div>
+                <div class="row g-0 btns-row">
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-aspect-ratio text-center choose-feature-btn" title="Resize"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-arrow-clockwise text-center choose-feature-btn" title="Rotate Clockwise"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-arrow-counterclockwise text-center choose-feature-btn" title="Rotate Anticlockwise"></i>
+                    </div>
+                </div>
+                <div class="row g-0 btns-row">
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-circle-half text-center choose-feature-btn" title="Contrast"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-brightness-high text-center choose-feature-btn" title="Brightness"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-arrow-counterclockwise text-center choose-feature-btn" title="Rotate Anticlockwise"></i>
+                    </div>
+                </div>
+                <div class="row g-0 btns-row">
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-zoom-in text-center bg-light choose-feature-btn" title="Zoom In"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-zoom-out text-center bg-light choose-feature-btn" title="Zoom Out"></i>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-arrow-counterclockwise text-center choose-feature-btn"></i>
+                    </div>
+                </div>
+                <div class="" style="width: 100%;padding: 10px;">
+                    <a onclick="download_img(this)" class="btn btn-success w-100">Export</a>
+                </div>
+            </div>
+            <div class="col-md-11 photopreview text-center">
+                <canvas id="mainCanvas">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
