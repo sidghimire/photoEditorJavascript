@@ -2,8 +2,10 @@ $(document).ready(function() {
     var file = document.getElementById("uploadFile");
     var canvas = document.getElementById("mainCanvas");
     var context = canvas.getContext("2d");
+    var canvasState = [];
+    var lastArray;
     context.translate(0, 0);
-
+    var undoNumber = 0;
 
     $("#uploadFile").change(function(e) {
         e.preventDefault();
@@ -39,10 +41,19 @@ $(document).ready(function() {
             canvas.width = getImage.naturalWidth * ratio;
             canvas.height = getImage.naturalHeight * ratio;
             context.drawImage(getImage, 0, 0, getImage.naturalWidth * ratio, getImage.naturalHeight * ratio);
-
         }
 
     });
+
+    function addText(x, y) {
+        var text = window.prompt("Enter Text You Want To Add");
+        context.font = "40px Arial";
+        if (text != null) {
+            context.fillText(text, x, y);
+
+        }
+    }
+
     var action;
     $("#drawButton").on('click', function() {
         action = 'draw';
@@ -52,6 +63,39 @@ $(document).ready(function() {
     });
     $("#crop").on('click', function() {
         action = 'crop';
+    });
+    $("#select").on('click', function() {
+        action = 'select';
+    });
+    $("#text").on('click', function() {
+        action = 'text';
+    });
+
+    $("#resize").on('click', function() {
+        var resizeScale = window.prompt("Input Resize Scale");
+        var tempCanvas = document.createElement("canvas");
+        var tempCtx = tempCanvas.getContext("2d");
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        tempCtx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
+        canvas.width = tempCanvas.width * resizeScale;
+        canvas.height = tempCanvas.height * resizeScale;
+        context.drawImage(tempCanvas, 0, 0, tempCanvas.width * resizeScale, tempCanvas.height * resizeScale);
+
+    });
+    $("#scissors").on('click', function() {
+        if (action == 'crop') {
+            var tempCanvas = document.createElement("canvas");
+            var tempCtx = tempCanvas.getContext("2d");
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            tempCtx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
+
+            canvas.width = cropDimX;
+            canvas.height = cropDimY;
+            context.drawImage(tempCanvas, cropXInit + 1, cropYInit + 1, cropDimX - 2, cropDimY - 2, 0, 0, cropDimX, cropDimY);
+
+        }
     });
     $("#bucket").on('click', function() {
         if (action == 'crop') {
@@ -67,6 +111,7 @@ $(document).ready(function() {
     $("#delete").on("click", function() {
         if (action == 'crop') {
             context.clearRect(cropXInit - 1, cropYInit - 1, cropDimX + 2, cropDimY + 2);
+
         }
 
     });
@@ -90,7 +135,9 @@ $(document).ready(function() {
         context.restore();
 
         tempCanvas.remove();
+
     });
+
     $("#rotateAntiClock").on('click', function() {
         var tempCanvas = document.createElement("canvas");
         var tempCtx = tempCanvas.getContext("2d");
@@ -134,14 +181,21 @@ $(document).ready(function() {
 
             x = e.offsetX;
             y = e.offsetY;
+        } else if (action == 'text') {
+
+            x = e.offsetX;
+            y = e.offsetY;
+            addText(x, y);
         }
     });
     canvas.addEventListener("mouseup", e => {
 
         if (action == 'draw') {
             isDrawing = false;
+
         } else if (action == 'brush') {
             isBrushing = false;
+
         } else if (action == 'crop') {
             var tempCanvas = document.createElement("canvas");
             var tempCtx = tempCanvas.getContext("2d");
@@ -153,8 +207,9 @@ $(document).ready(function() {
             context.strokeRect(x, y, e.offsetX - x, e.offsetY - y);
             cropXInit = x;
             cropYInit = y;
-            cropDimX = e.offsetX - x;
-            cropDimY = e.offsetY - y;
+            cropDimX = e.offsetX - cropXInit;
+            cropDimY = e.offsetY - cropXInit;
+
         }
 
 
@@ -165,15 +220,14 @@ $(document).ready(function() {
         if (isDrawing) {
             context.beginPath();
             context.lineCap = 'round';
-            console.log(x, y, e.offsetX, e.offsetY);
             context.moveTo(x, y);
             context.lineTo(e.offsetX, e.offsetY);
             x = e.offsetX;
             y = e.offsetY;
-            console.log(e.offsetX, e.offsetY);
             context.lineWidth = 3;
             context.stroke();
             context.closePath();
+
         } else if (isBrushing) {
             context.beginPath();
             context.lineCap = 'round';
@@ -183,8 +237,8 @@ $(document).ready(function() {
             y = e.offsetY;
             context.lineWidth = 10;
             context.stroke();
-            context.closePath();
 
+            context.closePath();
         }
 
     });
@@ -193,7 +247,6 @@ $(document).ready(function() {
 
     download_img = function(el) {
         var image = canvas.toDataURL("image/jpg");
-        console.log(image);
         el.href = image;
         el.setAttribute('download', 'Export.jpg');
 
